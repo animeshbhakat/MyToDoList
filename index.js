@@ -4,6 +4,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+const dotenv = require("dotenv");
+dotenv.config();
+const cors = require("cors");
 
 const app = express();
 
@@ -11,13 +14,11 @@ app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(cors());
 
-mongoose.connect(
-  "mongodb+srv://admin-animesh:z62NIM5Apczcx3Mh@cluster0.lbwr3uz.mongodb.net/todolistDB",
-  {
-    useNewUrlParser: true,
-  }
-);
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+});
 
 const itemsSchema = mongoose.Schema({
   name: String,
@@ -150,7 +151,9 @@ app.get("/work", function (req, res) {
 app.get("/about", function (req, res) {
   res.render("about");
 });
-
-app.listen(3000, function () {
-  console.log("Server started on port 3000");
-});
+if (process.env.API_PORT) {
+  app.listen(process.env.API_PORT, function () {
+    console.log("Server started on port 3000");
+  });
+}
+module.exports = app;
