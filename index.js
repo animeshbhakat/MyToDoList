@@ -56,7 +56,7 @@ app.get("/", function (req, res) {
         Item.insertMany(defaultItems);
       }
 
-      res.render("list", { listTitle: "Today", newListItems: foundItems });
+      res.render("list.ejs", { listTitle: "Today", newListItems: foundItems });
     })
     .catch((err) => {
       console.log(err);
@@ -71,7 +71,7 @@ app.get("/:customListName", function (req, res) {
     .then((foundItems) => {
       if (foundItems) {
         // console.log("List found");
-        res.render("list", {
+        res.render("list.ejs", {
           listTitle: foundItems.name,
           newListItems: foundItems.items,
         });
@@ -145,11 +145,11 @@ app.post("/delete", function (req, res) {
 });
 
 app.get("/work", function (req, res) {
-  res.render("list", { listTitle: "Work List", newListItems: workItems });
+  res.render("list.ejs", { listTitle: "Work List", newListItems: workItems });
 });
 
 app.get("/about", function (req, res) {
-  res.render("about");
+  res.render("about.ejs");
 });
 if (process.env.API_PORT) {
   app.listen(process.env.API_PORT, function () {
